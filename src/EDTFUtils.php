@@ -9,6 +9,7 @@ class EDTFUtils {
 
   // EDTF Date Parse REGEX Array Positions.
   const DATE_PARSE_REGEX       = '/^([%\?~])?(Y?(-?[\dX]+)(E\d)?(S\d)?)([%\?~])?-?([%\?~])?([\dX]{2})?([%\?~])?-?([%\?~])?([\dX]{2})?([%\?~])?$/';
+  const DATE_EXTRA             = '/(?:\d{2}|\d{2})\d{2}\s*\/\s*(?:\d{2}|\d{2})\d{2}/';
   const FULL_MATCH             = 0;
   const QUALIFIER_YEAR_ONLY    = 1;
   const YEAR_FULL              = 2;
@@ -188,6 +189,10 @@ class EDTFUtils {
     else {
       $date = (string) $datetime_str;
       $time = NULL;
+    }
+
+    if (preg_match(self::DATE_EXTRA, $date, $parsed_date) === 1) {
+      return $msgs;
     }
 
     if (preg_match(self::DATE_PARSE_REGEX, $date, $parsed_date) !== 1 ||
